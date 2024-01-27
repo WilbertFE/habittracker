@@ -4,17 +4,14 @@ import { useState } from "react";
 // data default
 let defaultHabits = [
   {
-    id: 1,
     name: 'Olahraga',
     checked: true
   },
   {
-    id: 2,
     name: 'Belajar',
     checked: false
   },
   {
-    id: 3,
     name: 'Ngoding',
     checked: false
   }
@@ -61,6 +58,7 @@ export default function App() {
   }
 
   function handleClear(){
+    localStorage.clear();
     setHabits([]);
   }
 
