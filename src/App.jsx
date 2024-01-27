@@ -20,7 +20,7 @@ let defaultHabits = [
   }
 ];
 
-// jika localStorage ada isinya
+// jika localStorage ada isinyaa
 if(localStorage.length > 0){
   defaultHabits = [];
   for(let i=1; i<=localStorage.length / 2; i++){
