@@ -4,14 +4,17 @@ import { useState } from "react";
 // data default
 let defaultHabits = [
   {
+    id: Date.now() + 1,
     name: 'Olahraga',
     checked: true
   },
   {
+    id: Date.now() + 2,
     name: 'Belajar',
     checked: false
   },
   {
+    id: Date.now() + 3,
     name: 'Ngoding',
     checked: false
   }
