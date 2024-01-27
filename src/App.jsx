@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 
-const defaultHabits = [
+// data default
+let defaultHabits = [
   {
     id: 1,
     name: 'Olahraga',
@@ -14,27 +15,48 @@ const defaultHabits = [
   },
   {
     id: 3,
-    name: 'Membaca',
-    checked: false
-  },
-  {
-    id: 4,
     name: 'Ngoding',
-    checked: true
-  },
+    checked: false
+  }
 ];
+
+// jika localStorage ada isinya
+if(localStorage.length > 0){
+  defaultHabits = [];
+  for(let i=1; i<=localStorage.length / 2; i++){
+    const newHabit = {};
+    newHabit.id = i;
+    newHabit.name = localStorage[`${newHabit.id}`];
+    newHabit.checked = localStorage[`${newHabit.name}`] === 'true' ? true : false;
+    defaultHabits.push(newHabit);
+  }
+}
 
 export default function App() {
 
   const [habits, setHabits] = useState(defaultHabits);
 
+ 
   function handleToggle(id){
-    const newHabits = habits.map((habit) => habit.id === id ? {...habit, checked: !habit.checked} : habit);
+    const newHabits = habits.map((habit) => {
+      if (habit.id === id){
+        localStorage[`${habit.name}`] = localStorage[`${habit.name}`] === 'true' ? 'false' : 'true';
+        return {...habit, checked: !habit.checked};
+      } else {
+        return habit;
+      }
+    });
     setHabits(newHabits);
   }
 
   function handleDelete(id){
+    localStorage.clear();
     const nextHabits = habits.filter((habit) => habit.id !== id);
+    nextHabits.map((habit, i) => {
+        habit.id = i + 1;
+        localStorage[`${i + 1}`] = habit.name;
+        localStorage[`${habit.name}`] = habit.checked;
+    });
     setHabits(nextHabits);
   }
 
@@ -44,9 +66,12 @@ export default function App() {
 
   function handleAdd(value){
     const newObj = {};
-    newObj.id = habits.length + 1;
+    newObj.id = localStorage.length / 2 + 1;
     newObj.name = value;
     newObj.checked = false;
+
+    localStorage[`${newObj.id}`] = newObj.name;
+    localStorage[`${newObj.name}`] = newObj.checked;
 
     const nextHabits = [...habits, newObj];
     setHabits(nextHabits);
@@ -144,7 +169,7 @@ function Item({habit, onToggle, onDelete}){
   return (
     <div className="w-full flex items-center p-4 my-2 bg-light rounded-lg shadow-sm">
       <input type="checkbox" onChange={() => onToggle(habit.id)} checked={habit.checked} className="block w-[20px] h-[20px] mr-4" />
-      <h3 className="text-lg text-dark flex-1 truncate">{habit.name}</h3>
+      <h3 style={habit.checked ? {textDecoration: 'line-through'} : {}} className="text-lg text-dark flex-1 truncate">{habit.name}</h3>
       <button onClick={() => onDelete(habit.id)}><img src="/habittracker/delete.png" alt="delete.png" /></button>
     </div>
   );
