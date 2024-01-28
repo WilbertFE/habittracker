@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hilang {
+    animation: hilang 1s ease-in-out ;
+}
+
+@keyframes hilang {
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    } 
+}

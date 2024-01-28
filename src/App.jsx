@@ -42,7 +42,7 @@ export default function App() {
     const newHabits = habits.map((habit, i) => {
       localStorage[`${i + 1}`] = habit.name;
       localStorage[`${habit.name}`] = habit.checked;
-      
+
       if (habit.id === id){
         localStorage[`${habit.name}`] = localStorage[`${habit.name}`] === 'true' ? 'false' : 'true';
         return {...habit, checked: !habit.checked};
@@ -54,14 +54,19 @@ export default function App() {
   }
 
   function handleDelete(id){
+    setTimeout(() => {
+    // mengreset localStorage
     localStorage.clear();
+    // Membuat habit baru
     const nextHabits = habits.filter((habit) => habit.id !== id);
-    nextHabits.map((habit, i) => {
-        habit.id = i + 1;
-        localStorage[`${i + 1}`] = habit.name;
-        localStorage[`${habit.name}`] = habit.checked;
-    });
-    setHabits(nextHabits);
+      nextHabits.map((habit, i) => {
+          habit.id = i + 1;
+          localStorage[`${i + 1}`] = habit.name;
+          localStorage[`${habit.name}`] = habit.checked;
+      });
+      // mengubah data menjadi baru
+      setHabits(nextHabits);
+    }, 1000);
   }
 
   function handleClear(){
@@ -172,10 +177,10 @@ function Main({habits, onToggle, onDelete, onClear}){
 
 function Item({habit, onToggle, onDelete}){
   return (
-    <div className="w-full flex items-center p-4 my-2 bg-light rounded-lg shadow-sm">
+    <div className="habit w-full flex items-center p-4 my-2 bg-light rounded-lg shadow-sm">
       <input type="checkbox" onChange={() => onToggle(habit.id)} checked={habit.checked} className="block w-[20px] h-[20px] mr-4" />
       <h3 style={habit.checked ? {textDecoration: 'line-through'} : {}} className="text-lg text-dark flex-1 truncate">{habit.name}</h3>
-      <button onClick={() => onDelete(habit.id)}><img src="/habittracker/delete.png" alt="delete.png" /></button>
+      <button onClick={() => onDelete(habit.id)}><img src ="/habittracker/delete.png" alt="delete.png" className="delete-button" /></button>
     </div>
   );
 }
@@ -232,3 +237,20 @@ function Input({onAdd}){
   );
 }
 // Akhir komponen footer
+
+
+// awal function dasar
+document.addEventListener('click', function(e){
+  if(e.target.classList.contains('delete-button')){
+    const habitItem = Array.from(document.querySelectorAll('.habit'));
+    habitItem.map((item) => {
+        if(e.target.parentNode.parentNode === item){
+          item.classList.add('hilang');
+          setTimeout(() => {
+            item.classList.remove('hilang');
+          }, 1000);
+        }
+    });
+  }
+});
+// akhir function dasar
