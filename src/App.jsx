@@ -38,7 +38,11 @@ export default function App() {
 
  
   function handleToggle(id){
-    const newHabits = habits.map((habit) => {
+    localStorage.clear();
+    const newHabits = habits.map((habit, i) => {
+      localStorage[`${i + 1}`] = habit.name;
+      localStorage[`${habit.name}`] = habit.checked;
+      
       if (habit.id === id){
         localStorage[`${habit.name}`] = localStorage[`${habit.name}`] === 'true' ? 'false' : 'true';
         return {...habit, checked: !habit.checked};
