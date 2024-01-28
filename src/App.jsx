@@ -90,7 +90,9 @@ export default function App() {
   return (
     <div id="app" className="font-roboto bg-primary min-h-[1000px]">
       {/* Awal Header */}
-        <Header habits={habits} />
+        <Header>
+          <Tracker habits={habits} />
+        </Header>
       {/* Akhir Header */}
 
       {/* Awal Lists */}
@@ -98,7 +100,9 @@ export default function App() {
       {/* Akhir Lists */}
 
       {/* Awal Footer */}
-      <Footer onAdd={handleAdd} />
+      <Footer>
+        <Input onAdd={handleAdd} />
+      </Footer>
       {/* Akhir Footer */}
 
     </div>
@@ -107,14 +111,14 @@ export default function App() {
 
 
 // Awal komponen header
-function Header({habits}){
+function Header({children}){
 
   return (
     <header className="pt-12">
          <div className="container">
           <div className="flex flex-wrap mx-4">
             <Title />
-            <Tracker habits={habits} />
+            {children}
           </div>
          </div>
     </header>
@@ -208,13 +212,13 @@ function Sort({setSortBy, habits}){
 // Akhir komponen main
 
 // Awal komponen footer
-function Footer({onAdd}){
+function Footer({children}){
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 bg-secondary border-t-4 border-dark/40">
         <div className="container">
           <div className="flex flex-wrap mx-4">
-            <Input onAdd={onAdd} />
+            {children}
           </div>
         </div>
     </footer>
