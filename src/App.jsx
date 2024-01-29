@@ -94,6 +94,43 @@ export default function App() {
 
   return (
     <div id="app" className="font-roboto bg-primary min-h-[1000px]">
+
+      {/* Awal NavBar */}
+      <nav className="fixed right-0 left-0 bg-secondary shadow-sm">
+        <div className="container">
+          <div className="flex mx-4">
+            <div className="w-1/2 py-5">
+              <h1 className="text-light font-bold text-2xl">Habit Tracker</h1>
+            </div>
+            <div className="w-1/2 relative">
+              <div className="flex items-center justify-end cursor-pointer">
+                <h3 className="text-light text-lg mr-2">Menu</h3>
+                <span className="text-light text-xl relative -top-2">&#x2304;</span>
+              </div>
+              <div className="flex flex-wrap min-w-[250px] p-4 bg-white absolute top-14 rounded-lg shadow-md">
+                <div className="w-full flex items-center my-4 bg-slate-100 rounded-lg">
+                  <img src="/habittracker/public/default.png" alt="default.png" className="block w-8 h-8 mr-2" />
+                  <h3 className="text-dark text-lg">Default</h3>
+                </div>
+                <div className="w-full flex items-center my-4 rounded-lg">
+                  <img src="/habittracker/public/hobbies.png" alt="default.png" className="block w-8 h-8 mr-2" />
+                  <h3 className="text-dark text-lg">Hobi</h3>
+                </div>
+                <div className="w-full flex items-center my-4 rounded-lg">
+                  <img src="/habittracker/public/going-to-work.png" alt="default.png" className="block w-8 h-8 mr-2" />
+                  <h3 className="text-dark text-lg">Pekerjaan</h3>
+                </div>
+                <div className="w-full flex items-center my-4 rounded-lg">
+                  <img src="/habittracker/public/library.png" alt="default.png" className="block w-8 h-8 mr-2" />
+                  <h3 className="text-dark text-lg">Belajar</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      {/* Akhir NavBar */}
+
       {/* Awal Header */}
         <Header>
           <Tracker habits={habits} />
@@ -129,4 +166,6 @@ document.addEventListener('click', function(e){
     });
   }
 });
+
+
 // akhir function dasar

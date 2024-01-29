@@ -4,7 +4,7 @@ import Title from './Title';
 export default function Header({children}){
 
     return (
-      <header className="pt-12">
+      <header className="pt-24">
            <div className="container">
             <div className="flex flex-wrap mx-4">
               <Title />
