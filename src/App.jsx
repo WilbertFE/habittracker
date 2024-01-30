@@ -11,17 +11,20 @@ let defaultHabits = [
   {
     id: Date.now() + 1,
     name: 'Olahraga',
-    checked: true
+    checked: true,
+    type: 'sport'
   },
   {
     id: Date.now() + 2,
     name: 'Belajar',
-    checked: false
+    checked: false,
+    type: 'study'
   },
   {
     id: Date.now() + 3,
     name: 'Ngoding',
-    checked: false
+    checked: false,
+    type: 'work'
   }
 ];
 
