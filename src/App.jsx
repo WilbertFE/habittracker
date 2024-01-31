@@ -31,28 +31,30 @@ let defaultHabits = [
 // jika localStorage ada isinyaa
 if(localStorage.length > 0){
   defaultHabits = [];
-  for(let i=1; i<=localStorage.length / 2; i++){
+  for(let i=1; i<=localStorage.length / 3; i++){
     const newHabit = {};
     newHabit.id = i;
     newHabit.name = localStorage[`${newHabit.id}`];
-    newHabit.checked = localStorage[`${newHabit.name}`] === 'true' ? true : false;
+    newHabit.type = localStorage[`${newHabit.name}`];
+    newHabit.checked = localStorage[`${newHabit.name}${newHabit.type}`] === 'true' ? true : false;
     defaultHabits.push(newHabit);
   }
 }
 
 export default function App() {
-
   const [habits, setHabits] = useState(defaultHabits);
+  const [onMenus, setOnMenus] = useState(false);
 
  
   function handleToggle(id){
     localStorage.clear();
     const newHabits = habits.map((habit, i) => {
       localStorage[`${i + 1}`] = habit.name;
-      localStorage[`${habit.name}`] = habit.checked;
+      localStorage[`${habit.name}`] = habit.type;
+      localStorage[`${habit.name}${habit.type}`] = habit.checked;
 
       if (habit.id === id){
-        localStorage[`${habit.name}`] = localStorage[`${habit.name}`] === 'true' ? 'false' : 'true';
+        localStorage[`${habit.name}${habit.type}`] = localStorage[`${habit.name}${habit.type}`] === 'true' ? 'false' : 'true';
         return {...habit, checked: !habit.checked};
       } else {
         return habit;
@@ -70,7 +72,8 @@ export default function App() {
       nextHabits.map((habit, i) => {
           habit.id = i + 1;
           localStorage[`${i + 1}`] = habit.name;
-          localStorage[`${habit.name}`] = habit.checked;
+          localStorage[`${habit.name}`] = habit.type;
+          localStorage[`${habit.name}${habit.type}`] = habit.checked;
       });
       // mengubah data menjadi baru
       setHabits(nextHabits);
@@ -84,22 +87,44 @@ export default function App() {
 
   function handleAdd(value){
     const newObj = {};
-    newObj.id = localStorage.length / 2 + 1;
+    newObj.id = localStorage.length / 3 + 1;
     newObj.name = value;
     newObj.checked = false;
+    newObj.type = 'default';
 
     localStorage[`${newObj.id}`] = newObj.name;
-    localStorage[`${newObj.name}`] = newObj.checked;
+    localStorage[`${newObj.name}`] = newObj.type;
+    localStorage[`${newObj.name}${newObj.type}`] = newObj.checked;
 
     const nextHabits = [...habits, newObj];
     setHabits(nextHabits);
+  }
+
+  function handleType(type){
+    const newHabits = [];
+
+    if(type !== 'all'){
+      setOnMenus(true);
+    } else {
+      setOnMenus(false);
+    }
+
+    for (let i=1; i<=localStorage.length / 3; i++){
+      const newObj = {};
+      newObj.id = i;
+      newObj.name = localStorage[`${newObj.id}`];
+      newObj.type = localStorage[`${newObj.name}`];
+      newObj.checked = localStorage[`${newObj.name}${newObj.type}`] === 'true' ? true : false;
+      newHabits.push(newObj);
+  }
+  setHabits(newHabits.filter((habit) => type === 'all' ? habit : habit.type === type));
   }
 
   return (
     <div id="app" className="font-roboto bg-primary min-h-[1000px]">
 
       {/* Awal NavBar */}
-      <Navbar />
+      <Navbar onType={handleType}/>
       {/* Akhir NavBar */}
 
       {/* Awal Header */}
@@ -109,12 +134,12 @@ export default function App() {
       {/* Akhir Header */}
 
       {/* Awal Lists */}
-        <Main habits={habits} onToggle={handleToggle} onDelete={handleDelete} onClear={handleClear} />
+        <Main onMenus={onMenus} habits={habits} onToggle={handleToggle} onDelete={handleDelete} onClear={handleClear} />
       {/* Akhir Lists */}
 
       {/* Awal Footer */}
       <Footer>
-        <Input onAdd={handleAdd} />
+        <Input onAdd={handleAdd} onMenus={onMenus} />
       </Footer>
       {/* Akhir Footer */}
 
