@@ -6,27 +6,10 @@ import Main from "./components/Main";
 import Footer from './components/Footer';
 import Input from "./components/Input";
 import Navbar from "./components/Navbar";
+import Tambah from "./components/Tambah";
+
 // data default
-let defaultHabits = [
-  {
-    id: Date.now() + 1,
-    name: 'Olahraga',
-    checked: true,
-    type: 'sport'
-  },
-  {
-    id: Date.now() + 2,
-    name: 'Belajar',
-    checked: false,
-    type: 'study'
-  },
-  {
-    id: Date.now() + 3,
-    name: 'Ngoding',
-    checked: false,
-    type: 'work'
-  }
-];
+let defaultHabits = [];
 
 // jika localStorage ada isinyaa
 if(localStorage.length > 0){
@@ -40,7 +23,7 @@ if(localStorage.length > 0){
     defaultHabits.push(newHabit);
   }
 }
-
+ 
 export default function App() {
   const [habits, setHabits] = useState(defaultHabits);
   const [onMenus, setOnMenus] = useState(false);
@@ -120,8 +103,12 @@ export default function App() {
   setHabits(newHabits.filter((habit) => type === 'all' ? habit : habit.type === type));
   }
 
+  function handleAddWType(value, type){
+    console.log('ok');
+  }
+
   return (
-    <div id="app" className="font-roboto bg-primary min-h-[1000px]">
+    <div id="app" className="font-roboto">
 
       {/* Awal NavBar */}
       <Navbar onType={handleType}/>
@@ -142,6 +129,10 @@ export default function App() {
         <Input onAdd={handleAdd} onMenus={onMenus} />
       </Footer>
       {/* Akhir Footer */}
+
+      {/* Awal plus button */}
+      <Tambah onAddWType={handleAddWType} />
+      {/* Akhir plus button */}
 
     </div>
   ); 
