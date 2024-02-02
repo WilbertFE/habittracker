@@ -153,4 +153,10 @@ document.addEventListener('click', function(e){
     });
   }
 });
+document.addEventListener('click', function(e){
+  if(e.target.classList.contains('hapus-modal')){
+    const modalContainer = document.querySelector('.modal-container');
+    modalContainer.style.display = 'none';
+  }
+});
 // akhir function dasar
