@@ -4,7 +4,7 @@ import Sort from './Sort';
 import Item from './Item';
 import Clear from './Clear';
 
-export default function Main({habits, onToggle, onDelete, onClear, onMenus}){
+export default function Main({habits, onToggle, onDelete, onClear}){
     const [sortBy, setSortBy] = useState('input');
     let sortedItems;
   
@@ -26,10 +26,9 @@ export default function Main({habits, onToggle, onDelete, onClear, onMenus}){
             <div className="flex flex-wrap mx-4">
               <Sort setSortBy={setSortBy} habits={habits} />
               {sortedItems.map((habit) => (
-                <Item onMenus={onMenus} key={habit.id} habit={habit} onToggle={onToggle} onDelete={onDelete} />
+                <Item key={habit.id} habit={habit} onToggle={onToggle} onDelete={onDelete} />
               ))}
-              <Clear onClear={onClear} habits={habits} onMenus={onMenus} />
-              <h1 className="text-center my-4 text-white" style={onMenus === false ? {display: 'none'} : {display: 'block'}}>Jika ingin menghapus, menceklis, menambah kebiasaan, balik ke menu <strong>Semua</strong></h1>
+              <Clear onClear={onClear} habits={habits} />
             </div>
            </div>
       </main>

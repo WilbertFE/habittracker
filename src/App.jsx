@@ -8,58 +8,38 @@ import Input from "./components/Input";
 import Navbar from "./components/Navbar";
 import Tambah from "./components/Tambah";
 
-// data default
-let defaultHabits = [];
+let trackedHabit = [];
 
 // jika localStorage ada isinyaa
-if(localStorage.length > 0){
-  defaultHabits = [];
-  for(let i=1; i<=localStorage.length / 3; i++){
-    const newHabit = {};
-    newHabit.id = i;
-    newHabit.name = localStorage[`${newHabit.id}`];
-    newHabit.type = localStorage[`${newHabit.name}`];
-    newHabit.checked = localStorage[`${newHabit.name}${newHabit.type}`] === 'true' ? true : false;
-    defaultHabits.push(newHabit);
-  }
+if(localStorage.getItem('allHabit')){
+  const allHabit = JSON.parse(localStorage.getItem('allHabit'));
+  trackedHabit = allHabit;
 }
  
 export default function App() {
-  const [habits, setHabits] = useState(defaultHabits);
-  const [onMenus, setOnMenus] = useState(false);
+  const [habits, setHabits] = useState(trackedHabit);
 
  
   function handleToggle(id){
-    localStorage.clear();
-    const newHabits = habits.map((habit, i) => {
-      localStorage[`${i + 1}`] = habit.name;
-      localStorage[`${habit.name}`] = habit.type;
-      localStorage[`${habit.name}${habit.type}`] = habit.checked;
-
-      if (habit.id === id){
-        localStorage[`${habit.name}${habit.type}`] = localStorage[`${habit.name}${habit.type}`] === 'true' ? 'false' : 'true';
-        return {...habit, checked: !habit.checked};
-      } else {
-        return habit;
-      }
-    });
-    setHabits(newHabits);
+    // mengfilter Array dari localStorage
+    const allHabit = JSON.parse(localStorage.getItem('allHabit'));
+    const mapArr = allHabit.map((habit) => habit.id === id ? {...habit, checked: !habit.checked} : habit);
+    // menimpa localStorage
+    localStorage.allHabit = JSON.stringify(mapArr);
+    // mengubah nilai state
+    setHabits(mapArr);
   }
 
   function handleDelete(id){
     setTimeout(() => {
-    // mengreset localStorage
-    localStorage.clear();
-    // Membuat habit baru
-    const nextHabits = habits.filter((habit) => habit.id !== id);
-      nextHabits.map((habit, i) => {
-          habit.id = i + 1;
-          localStorage[`${i + 1}`] = habit.name;
-          localStorage[`${habit.name}`] = habit.type;
-          localStorage[`${habit.name}${habit.type}`] = habit.checked;
-      });
-      // mengubah data menjadi baru
-      setHabits(nextHabits);
+      // mengambil data
+      const allHabit = JSON.parse(localStorage.getItem('allHabit'));
+      // mengfilter
+      const filteredArr = allHabit.filter((habit) => habit.id !== id);
+      // menimpa localStorage
+      localStorage.allHabit = JSON.stringify(filteredArr);
+      // menimpa state habits
+      setHabits(filteredArr);
     }, 1000);
   }
 
@@ -69,38 +49,26 @@ export default function App() {
   }
 
   function handleAdd(value){
+    // membuat data kebiasaan baru
     const newObj = {};
-    newObj.id = localStorage.length / 3 + 1;
+    newObj.id = Date.now();
     newObj.name = value;
     newObj.checked = false;
     newObj.type = 'default';
 
-    localStorage[`${newObj.id}`] = newObj.name;
-    localStorage[`${newObj.name}`] = newObj.type;
-    localStorage[`${newObj.name}${newObj.type}`] = newObj.checked;
+    // menambil data dari localStorage
+    const allHabit = JSON.parse(localStorage.getItem('allHabit') ? localStorage.getItem('allHabit') : '[]');
+    allHabit.push(newObj);
 
-    const nextHabits = [...habits, newObj];
-    setHabits(nextHabits);
+    // menimpa data localStorage
+    localStorage.allHabit = JSON.stringify(allHabit);
+
+    // mengubah nilai state
+    setHabits([...habits, newObj]);
   }
 
   function handleType(type){
-    const newHabits = [];
-
-    if(type !== 'all'){
-      setOnMenus(true);
-    } else {
-      setOnMenus(false);
-    }
-
-    for (let i=1; i<=localStorage.length / 3; i++){
-      const newObj = {};
-      newObj.id = i;
-      newObj.name = localStorage[`${newObj.id}`];
-      newObj.type = localStorage[`${newObj.name}`];
-      newObj.checked = localStorage[`${newObj.name}${newObj.type}`] === 'true' ? true : false;
-      newHabits.push(newObj);
-  }
-  setHabits(newHabits.filter((habit) => type === 'all' ? habit : habit.type === type));
+    console.log('ok');
   }
 
   function handleAddWType(value, type){
@@ -121,12 +89,12 @@ export default function App() {
       {/* Akhir Header */}
 
       {/* Awal Lists */}
-        <Main onMenus={onMenus} habits={habits} onToggle={handleToggle} onDelete={handleDelete} onClear={handleClear} />
+        <Main habits={habits} onToggle={handleToggle} onDelete={handleDelete} onClear={handleClear} />
       {/* Akhir Lists */}
 
       {/* Awal Footer */}
       <Footer>
-        <Input onAdd={handleAdd} onMenus={onMenus} />
+        <Input onAdd={handleAdd} />
       </Footer>
       {/* Akhir Footer */}
 
