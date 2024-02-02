@@ -1,8 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 
-export default function Navbar({onType}){
+export default function Navbar({onType, stayOn, setStayOn}){
     const [isOpen, setIsOpen] = useState(false);
+
+    function handleType(type){
+      setStayOn(type);
+      onType(type);
+    }
 
     return (
     <nav className="fixed right-0 left-0 bg-secondary shadow-sm">
@@ -17,23 +22,23 @@ export default function Navbar({onType}){
                 <span className="text-light text-lg mr-2">Menu <span className="text-light text-2xl relative -top-[6px]">&#x2304;</span></span>
               </label>
               <div style={isOpen ? {display: 'flex'} : {display: 'none'}} className="flex-col justify-around absolute top-16 w-[250px] h-[300px] p-4 bg-white rounded-lg shadow-md">
-                <div onClick={() => onType('all')} className="flex items-center cursor-pointer bg-light">
+                <div style={stayOn === 'all' ? {backgroundColor: '#f1f5f9'} : {}} onClick={() => handleType('all')} className="flex items-center cursor-pointer">
                   <img src="/habittracker/default.png" alt="all" className="block w-8 mr-2" />
                   <span className="text-lg text-dark">Semua</span>
                 </div>
-                <div onClick={() => onType('sport')} className="flex items-center cursor-pointer">
+                <div style={stayOn === 'sport' ? {backgroundColor: '#f1f5f9'} : {}} onClick={() => handleType('sport')} className="flex items-center cursor-pointer">
                   <img src="/habittracker/gym.png" alt="sport" className="block w-8 mr-2" />
                   <span className="text-lg text-dark">Olahraga</span>
                 </div>
-                <div onClick={() => onType('work')} className="flex items-center cursor-pointer">
+                <div style={stayOn === 'work' ? {backgroundColor: '#f1f5f9'} : {}} onClick={() => handleType('work')} className="flex items-center cursor-pointer">
                   <img src="/habittracker/working.png" alt="work" className="block w-8 mr-2" />
                   <span className="text-lg text-dark">Pekerjaan</span>
                 </div>
-                <div onClick={() => onType('study')} className="flex items-center cursor-pointer">
+                <div style={stayOn === 'study' ? {backgroundColor: '#f1f5f9'} : {}} onClick={() => handleType('study')} className="flex items-center cursor-pointer">
                   <img src="/habittracker/library.png" alt="study" className="block w-8 mr-2" />
                   <span className="text-lg text-dark">Belajar</span>
                 </div>
-                <div onClick={() => onType('default')} className="flex items-center cursor-pointer">
+                <div style={stayOn === 'default' ? {backgroundColor: '#f1f5f9'} : {}} onClick={() => handleType('default')} className="flex items-center cursor-pointer">
                   <img src="/habittracker/settings.png" alt="default" className="block w-8 mr-2" />
                   <span className="text-lg text-dark">Default</span>
                 </div>

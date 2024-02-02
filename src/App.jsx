@@ -18,6 +18,7 @@ if(localStorage.getItem('allHabit')){
  
 export default function App() {
   const [habits, setHabits] = useState(trackedHabit);
+  const [stayOn, setStayOn] = useState('all');
 
  
   function handleToggle(id){
@@ -28,6 +29,7 @@ export default function App() {
     localStorage.allHabit = JSON.stringify(mapArr);
     // mengubah nilai state
     setHabits(mapArr);
+    setStayOn('all');
   }
 
   function handleDelete(id){
@@ -68,18 +70,40 @@ export default function App() {
   }
 
   function handleType(type){
-    console.log('ok');
+    // mengambil data
+    const allHabit = JSON.parse(localStorage.getItem('allHabit') ? localStorage.getItem('allHabit') : '[]');
+    let newArr;
+    // switch
+    if (type === 'all'){
+      newArr = allHabit;
+      setHabits(newArr);
+    } else {
+      newArr = allHabit.filter((habit) =>  habit.type === type);
+      setHabits(newArr);
+    }
   }
 
   function handleAddWType(value, type){
-    console.log('ok');
+    // membuat objek habit baru
+    const newObj = {};
+    newObj.id = Date.now();
+    newObj.name = value;
+    newObj.type = type;
+    newObj.checked = false;
+    // mengambil data
+    const allHabit = JSON.parse(localStorage.getItem('allHabit') ? localStorage.getItem('allHabit') : '[]');
+    const newHabits = [...allHabit, newObj];
+    // menimpa localStorage
+    localStorage.allHabit = JSON.stringify(newHabits);
+    // menimpa state habits
+    setHabits(newHabits);
   }
 
   return (
     <div id="app" className="font-roboto">
 
       {/* Awal NavBar */}
-      <Navbar onType={handleType}/>
+      <Navbar onType={handleType} stayOn={stayOn} setStayOn={setStayOn}/>
       {/* Akhir NavBar */}
 
       {/* Awal Header */}
