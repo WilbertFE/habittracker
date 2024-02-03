@@ -42,6 +42,7 @@ export default function App() {
       localStorage.allHabit = JSON.stringify(filteredArr);
       // menimpa state habits
       setHabits(filteredArr);
+      setStayOn('all');
     }, 1000);
   }
 
